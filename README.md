@@ -1,6 +1,6 @@
 # German
 
-Set of modules with methods to conjucate German verbs.
+Set of modules with methods to conjugate German verbs.
 
 I made it to exercise both my programming skills in Elixir and German.
 
