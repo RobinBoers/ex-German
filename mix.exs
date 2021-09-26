@@ -7,7 +7,16 @@ defmodule German.MixProject do
       version: "0.1.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+
+      # Docs
+      name: "German",
+      source_url: "https://github.com/RobinBoers/ex-German",
+      docs: [
+        main: "readme", # The main page in the docs
+        logo: "flag.png",
+        extras: ["README.md"]
+      ]
     ]
   end
 
