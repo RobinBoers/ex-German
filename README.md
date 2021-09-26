@@ -8,7 +8,7 @@ I made it to exercise both my programming skills in Elixir and German.
 
 Git clone from master:
 
-```
+```bash
 git clone https://github.com/RobinBoers/ex-German
 ```
 
@@ -34,6 +34,6 @@ iex> German.PastParticiple.get('haben')
 
 Docs are generated using [ex_doc](https://hexdocs.pm/ex_doc/readme.html). To build, run:
 
-```
+```bash
 mix docs
 ```
