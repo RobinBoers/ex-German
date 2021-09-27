@@ -1,6 +1,8 @@
 defmodule German.Verbs do
   @moduledoc """
-    Module to generate all the variants of the modal auxiliary verbs in German.
+    Module to generate all the variants of the regular verbs in German.
+
+    NO EXEPTIONS ADDED YET.
   """
 
   @typedoc """
@@ -8,68 +10,110 @@ defmodule German.Verbs do
   """
   @type verb() :: charlist()
 
-  @form_one [:ich, :er, :sie, :es]
-  @form_two [:du]
-  @form_three [:wir, :siemv, :Sie]
-  @form_four [:ihr]
+  @form_one [:ich, ]
+  @form_two [:er, :sie, :es, :ihr]
+  @form_three [:du]
+  @form_four [:wir, :siemv, :Sie]
+  @modal_auxiliary_verbs ['können', 'dürfen', 'mögen', 'wissen', 'sollen', 'möchten', 'müssen', 'wollen']
+  @irregular_verbs ['haben', 'sein', 'werden']
 
   @doc """
     Method to conjugate a verb in German given a personal noun and a verb.
 
   ## Examples
-      iex> German.Verbs.get({:sie, 'können'})
-      'kann'
-      iex> German.Verbs.get({:ihr, 'möchten'})
-      'möchtet'
+      iex> German.Verbs.get({:ich, 'gehen'})
+      'gehe'
+      iex> German.Verbs.get({:ihr, 'arbeiten'})
+      'arbeitet'
   """
   @spec get({pers :: atom(), verb()}) :: verb()
   def get({_pers, verb}) when is_binary(verb), do: get(String.to_charlist(verb))
   def get({pers, verb}) do
     cond do
-      pers in @form_one ->
-        verb
-        |> switchchar
-        |> Enum.drop(-2)
+      verb in @modal_auxiliary_verbs ->
+        German.ModalAuxiliaryVerbs.get({pers, verb})
+      verb in @irregular_verbs ->
+        conjugate_irregular({pers, verb})
+      true ->
+        base = get_base(verb)
 
-      pers in @form_two ->
-        verb = verb
-        |> switchchar
-        |> Enum.drop(-2)
-
-        x = List.last(verb)
-        if(x == ?B or x == ?s) do
-          verb ++ [?t]
-        else
-          verb ++ [?s, ?t]
-        end
-      pers in @form_three ->
-        verb
-
-      pers in @form_four ->
         cond do
-          verb == 'möchten' -> Enum.drop(verb, -2) ++ [?e, ?t]
-          true -> Enum.drop(verb, -2) ++ [?t]
+          pers in @form_one ->
+            base ++ [?e]
+
+          pers in @form_two ->
+            base ++ [?s, ?t]
+
+          pers in @form_three ->
+            base ++ [?t]
+
+          pers in @form_four ->
+            verb
         end
     end
   end
 
   @doc """
-    Method to change the structure of the verb for @form_one and @form_two.
-
-    This is a helper function used in `get()`
+    Method to get the base to conjugate the verb in `get()`
   """
-  @spec switchchar(verb()) :: verb()
-  def switchchar(verb) do
-    case verb do
-      'können' -> 'kannen'
-      'dürfen' -> 'darfen'
-      'mögen' -> 'magen'
-      'wissen' -> 'weiBen'
-      'sollen' -> 'sollen'
-      'möchten' -> 'möchteen'
-      'müssen' -> 'mussen'
-      'wollen' -> 'willen'
+  @spec get_base(verb()) :: verb()
+  def get_base(verb) do
+
+    cond do
+      Enum.take(verb, -2) == 'en' -> Enum.drop(verb, -2)
+      Enum.take(verb, -1) == 'n' -> Enum.drop(verb, -1)
     end
   end
 
+  @doc """
+    Method to conjugate the irregular verbs in German.
+
+  ## Examples
+      iex> German.Verbs.conjugate_irregular({:ihr, 'haben'})
+      'habt'
+  """
+  @spec conjugate_irregular({atom(), verb()}) :: verb()
+  def conjugate_irregular({_pers, verb}) when is_binary(verb), do: conjugate_irregular(String.to_charlist(verb))
+  def conjugate_irregular({pers, verb}) do
+    case verb do
+      'sein' ->
+         cond do
+          pers in @form_one ->
+            'bin'
+
+          pers == :ihr ->
+            'seit'
+
+          pers in @form_two ->
+            'ist'
+
+          pers in @form_three ->
+            'bist'
+
+          pers in @form_four ->
+            'sind'
+        end
+
+      'haben' ->
+        cond do
+          pers in @form_one ->
+            'habe'
+
+          pers == :ihr ->
+            'habt'
+
+          pers in @form_two ->
+            'hat'
+
+          pers in @form_three ->
+            'hast'
+
+          pers in @form_four ->
+            'haben'
+        end
+
+      'werden' ->
+        IO.puts('Not supported yet.')
+    end
+  end
 end

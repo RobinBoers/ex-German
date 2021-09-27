@@ -207,4 +207,20 @@ defmodule GermanTest do
     assert German.PastParticiple.get('lernen') == 'gelernt'
   end
 
+  # regular verbs
+
+  #TODO(robin): Add regular verbs tests
+
+  # irregular verbs
+
+  test "haben" do
+    assert German.Verbs.get({:ich, 'haben'}) == 'habe'
+    assert German.Verbs.get({:ihr, 'haben'}) == 'habt'
+  end
+
+  test "sein" do
+    assert German.Verbs.get({:du, 'sein'}) == 'bist'
+    assert German.Verbs.get({:wir, 'sein'}) == 'sind'
+  end
+
 end
