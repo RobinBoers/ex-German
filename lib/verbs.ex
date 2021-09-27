@@ -1,9 +1,9 @@
 defmodule German.Verbs do
   @moduledoc """
     Module to generate all the variants of the regular verbs in German.
-
-    NO EXEPTIONS ADDED YET.
   """
+
+  #TODO(robin): Check for consonant before -men and -nen in @t_sounds
 
   @typedoc """
     A charlist representing the verb we're trying to conjugate.
@@ -16,6 +16,9 @@ defmodule German.Verbs do
   @form_four [:wir, :siemv, :Sie]
   @modal_auxiliary_verbs ['können', 'dürfen', 'mögen', 'wissen', 'sollen', 'möchten', 'müssen', 'wollen']
   @irregular_verbs ['haben', 'sein', 'werden']
+
+  @s_sounds ['s', 'x', 'z', 'ß', 'sch']
+  @t_sounds ['t', 'd', 'men', 'nen']
 
   @doc """
     Method to conjugate a verb in German given a personal noun and a verb.
@@ -32,8 +35,10 @@ defmodule German.Verbs do
     cond do
       verb in @modal_auxiliary_verbs ->
         German.ModalAuxiliaryVerbs.get({pers, verb})
+
       verb in @irregular_verbs ->
-        conjugate_irregular({pers, verb})
+        German.Verbs.conjugate_irregular({pers, verb})
+
       true ->
         base = get_base(verb)
 
@@ -42,10 +47,29 @@ defmodule German.Verbs do
             base ++ [?e]
 
           pers in @form_two ->
-            base ++ [?s, ?t]
+            cond do
+              Enum.take(base, -1) in @s_sounds or Enum.take(base, -3) in @s_sounds ->
+                base ++ [?e, ?t]
+
+              Enum.take(verb, -3) in @t_sounds and (verb != 'lernen' or verb != 'warnen') ->
+                base ++ [?e, ?t]
+
+              true -> base ++ [?t]
+            end
 
           pers in @form_three ->
-            base ++ [?t]
+            cond do
+              Enum.take(base, -1) in @s_sounds or Enum.take(base, -3) in @s_sounds ->
+                base ++ [?t]
+
+              Enum.take(base, -1) in @t_sounds ->
+                base ++ [?e, ?s, ?t]
+
+              Enum.take(verb, -3) in @t_sounds and (verb != 'lernen' or verb != 'warnen') ->
+                base ++ [?e, ?s, ?t]
+
+              true -> base ++ [?s, ?t]
+            end
 
           pers in @form_four ->
             verb
@@ -58,7 +82,6 @@ defmodule German.Verbs do
   """
   @spec get_base(verb()) :: verb()
   def get_base(verb) do
-
     cond do
       Enum.take(verb, -2) == 'en' -> Enum.drop(verb, -2)
       Enum.take(verb, -1) == 'n' -> Enum.drop(verb, -1)
@@ -81,14 +104,14 @@ defmodule German.Verbs do
           pers in @form_one ->
             'bin'
 
+          pers in @form_three ->
+            'bist'
+
           pers == :ihr ->
             'seit'
 
           pers in @form_two ->
             'ist'
-
-          pers in @form_three ->
-            'bist'
 
           pers in @form_four ->
             'sind'
@@ -99,14 +122,14 @@ defmodule German.Verbs do
           pers in @form_one ->
             'habe'
 
+          pers in @form_three ->
+            'hast'
+
           pers == :ihr ->
             'habt'
 
           pers in @form_two ->
             'hat'
-
-          pers in @form_three ->
-            'hast'
 
           pers in @form_four ->
             'haben'

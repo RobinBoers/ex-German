@@ -209,7 +209,20 @@ defmodule GermanTest do
 
   # regular verbs
 
-  #TODO(robin): Add regular verbs tests
+  test "gehen" do
+    assert German.Verbs.get({:ich, 'gehen'}) == 'gehe'
+    assert German.Verbs.get({:du, 'gehen'}) == 'gehst'
+  end
+
+  test "reisen" do
+    assert German.Verbs.get({:ich, 'reisen'}) == 'reise'
+    assert German.Verbs.get({:du, 'reisen'}) == 'reist'
+  end
+
+  test "arbeiten" do
+    assert German.Verbs.get({:ich, 'arbeiten'}) == 'arbeite'
+    assert German.Verbs.get({:du, 'arbeiten'}) == 'arbeitest'
+  end
 
   # irregular verbs
 
