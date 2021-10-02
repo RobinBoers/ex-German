@@ -3,14 +3,12 @@ defmodule German.Verbs do
     Module to generate all the variants of the regular verbs in German.
   """
 
-  #TODO(robin): Check for consonant before -men and -nen in @t_sounds
-
   @typedoc """
     A charlist representing the verb we're trying to conjugate.
   """
   @type verb() :: charlist()
 
-  @form_one [:ich, ]
+  @form_one [:ich]
   @form_two [:er, :sie, :es, :ihr]
   @form_three [:du]
   @form_four [:wir, :siemv, :Sie]
@@ -19,6 +17,8 @@ defmodule German.Verbs do
 
   @s_sounds ['s', 'x', 'z', 'ß', 'sch']
   @t_sounds ['t', 'd', 'men', 'nen']
+
+  @consonants ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
 
   @doc """
     Method to conjugate a verb in German given a personal noun and a verb.
@@ -49,23 +49,20 @@ defmodule German.Verbs do
           pers in @form_two ->
             cond do
               Enum.take(base, -1) in @s_sounds or Enum.take(base, -3) in @s_sounds ->
-                base ++ [?e, ?t]
+                base ++ [?t]
 
-              Enum.take(verb, -3) in @t_sounds and (verb != 'lernen' or verb != 'warnen') ->
+              Enum.take(base, -1) in @t_sounds or (Enum.take(verb, -3) in @t_sounds and Enum.take(Enum.drop(verb, -3), -1) in @consonants and (verb != 'lernen' and verb != 'warnen')) ->
                 base ++ [?e, ?t]
 
               true -> base ++ [?t]
             end
 
-          pers in @form_three ->
+          pers in @form_three -> # du
             cond do
               Enum.take(base, -1) in @s_sounds or Enum.take(base, -3) in @s_sounds ->
                 base ++ [?t]
 
-              Enum.take(base, -1) in @t_sounds ->
-                base ++ [?e, ?s, ?t]
-
-              Enum.take(verb, -3) in @t_sounds and (verb != 'lernen' or verb != 'warnen') ->
+              Enum.take(base, -1) in @t_sounds or (Enum.take(verb, -3) in @t_sounds and Enum.take(Enum.drop(verb, -3), -1) in @consonants and verb not in ['lernen', 'warnen']) ->
                 base ++ [?e, ?s, ?t]
 
               true -> base ++ [?s, ?t]

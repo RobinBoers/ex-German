@@ -214,14 +214,28 @@ defmodule GermanTest do
     assert German.Verbs.get({:du, 'gehen'}) == 'gehst'
   end
 
+  test "öffnen" do
+    assert German.Verbs.get({:ich, 'öffnen'}) == 'öffne'
+    assert German.Verbs.get({:du, 'öffnen'}) == 'öffnest'
+  end
+
+  test "lernen" do
+    assert German.Verbs.get({:ich, 'lernen'}) == 'lerne'
+    assert German.Verbs.get({:du, 'lernen'}) == 'lernst'
+  end
+
   test "reisen" do
     assert German.Verbs.get({:ich, 'reisen'}) == 'reise'
+    assert German.Verbs.get({:er, 'reisen'}) == 'reist'
     assert German.Verbs.get({:du, 'reisen'}) == 'reist'
+    assert German.Verbs.get({:ihr, 'reisen'}) == 'reist'
   end
 
   test "arbeiten" do
     assert German.Verbs.get({:ich, 'arbeiten'}) == 'arbeite'
+    assert German.Verbs.get({:er, 'arbeiten'}) == 'arbeitet'
     assert German.Verbs.get({:du, 'arbeiten'}) == 'arbeitest'
+    assert German.Verbs.get({:ihr, 'arbeiten'}) == 'arbeitet'
   end
 
   # irregular verbs

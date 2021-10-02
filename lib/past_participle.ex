@@ -8,6 +8,8 @@ defmodule German.PastParticiple do
   """
   @type verb() :: charlist()
 
+  @consonants ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
+
   @doc """
     Method to conjugate a past participle in German given a verb.
 
@@ -31,7 +33,7 @@ defmodule German.PastParticiple do
 
         cond do
           y == 't' or y == 'd' -> base ++ [?e, ?t]
-          (a == 'nen' or a == 'men') and (verb not in ['lernen', 'warnen'])  -> base ++ [?e, ?t]
+          ((a == 'nen' or a == 'men') and Enum.take(Enum.drop(verb, -3), -1) in @consonants) and (verb not in ['lernen', 'warnen'])  -> base ++ [?e, ?t]
           true -> base ++ [?t]
         end
     end
