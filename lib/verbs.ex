@@ -57,7 +57,7 @@ defmodule German.Verbs do
               true -> base ++ [?t]
             end
 
-          pers in @form_three -> # du
+          pers in @form_three ->
             cond do
               Enum.take(base, -1) in @s_sounds or Enum.take(base, -3) in @s_sounds ->
                 base ++ [?t]
