@@ -11,7 +11,7 @@ defmodule German.MixProject do
 
       # Docs
       name: "German",
-      source_url: "https://github.com/RobinBoers/ex-German",
+      source_url: "https://github.com/RobinBoers/ex-german",
       docs: [
         main: "readme", # The main page in the docs
         logo: "flag.png",

@@ -9,7 +9,7 @@ I made it to exercise both my programming skills in Elixir and German.
 Git clone from master:
 
 ```bash
-git clone https://github.com/RobinBoers/ex-German
+git clone https://github.com/RobinBoers/ex-german
 ```
 
 ## Examples
