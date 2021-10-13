@@ -15,7 +15,6 @@ git clone https://github.com/RobinBoers/ex-german
 ## Examples
 
 ```elixir
-
 iex> German.Verbs.get({:ich, 'gehen'})
 'gehe'
 
@@ -30,7 +29,6 @@ iex> German.Verbs.get({:ihr, 'möchten'})
 
 iex> German.PastParticiple.get('fotografieren')
 'fotografiert'
-
 ```
 
 ## Documentation

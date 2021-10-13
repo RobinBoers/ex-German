@@ -1,4 +1,4 @@
-defmodule German.ModalAuxiliaryVerbs do
+defmodule German.ModalVerbs do
   @moduledoc """
     Module to generate all the variants of the modal auxiliary verbs in German.
   """
@@ -17,59 +17,52 @@ defmodule German.ModalAuxiliaryVerbs do
     Method to conjugate a modal auxiliary verb in German given a personal noun and a verb.
 
   ## Examples
-      iex> German.ModalAuxiliaryVerbs.get({:sie, 'können'})
+      iex> German.ModalVerbs.get({:sie, 'können'})
       'kann'
-      iex> German.ModalAuxiliaryVerbs.get({:ihr, 'möchten'})
+      iex> German.ModalVerbs.get({:ihr, 'möchten'})
       'möchtet'
   """
-  @spec get({pers :: atom(), verb()}) :: verb()
+  @spec get({atom(), verb()}) :: verb()
   def get({_pers, verb}) when is_binary(verb), do: get(String.to_charlist(verb))
   def get({pers, verb}) do
     cond do
-      pers in @form_one ->
-        verb
-        |> switchchar
-        |> Enum.drop(-2)
-
-      pers in @form_two ->
-        verb = verb
-        |> switchchar
-        |> Enum.drop(-2)
-
-        x = List.last(verb)
-        if(x == ?B or x == ?s) do
-          verb ++ [?t]
-        else
-          verb ++ [?s, ?t]
-        end
-      pers in @form_three ->
-        verb
-
-      pers in @form_four ->
-        cond do
-          verb == 'möchten' -> Enum.drop(verb, -2) ++ [?e, ?t]
-          true -> Enum.drop(verb, -2) ++ [?t]
-        end
+      pers in @form_one -> conjugate({1, verb})
+      pers in @form_two -> conjugate({2, verb})
+      pers in @form_three -> conjugate({3, verb})
+      pers in @form_four -> conjugate({4, verb})
     end
   end
 
-  @doc """
-    Method to change the structure of the verb for @form_one and @form_two.
+  @spec conjugate({non_neg_integer(), verb()}) :: verb()
+  defp conjugate({1, verb}) do
+    get_base(verb)
+  end
 
-    This is a helper function used in `get()`
-  """
-  @spec switchchar(verb()) :: verb()
-  def switchchar(verb) do
+  defp conjugate({2, verb}) do
+    base = get_base(verb)
+    case List.last(base) do
+      ?ß -> base ++ [?t]
+      ?s -> base ++ [?t]
+      _ -> base ++ [?s, ?t]
+    end
+  end
+
+  defp conjugate({3, verb}), do: verb
+
+  defp conjugate({4, verb}) do
     case verb do
-      'können' -> 'kannen'
-      'dürfen' -> 'darfen'
-      'mögen' -> 'magen'
-      'wissen' -> 'weiBen'
-      'sollen' -> 'sollen'
-      'möchten' -> 'möchteen'
-      'müssen' -> 'mussen'
-      'wollen' -> 'willen'
+      'möchten' -> Enum.drop(verb, -2) ++ [?e, ?t]
+      _ -> Enum.drop(verb, -2) ++ [?t]
     end
   end
 
+  @spec get_base(verb()) :: verb()
+  defp get_base('können'), do: 'kann'
+  defp get_base('dürfen'), do: 'darf'
+  defp get_base('mögen'), do: 'mag'
+  defp get_base('wissen'), do: 'weiß'
+  defp get_base('sollen'), do: 'soll'
+  defp get_base('müssen'), do: 'muss'
+  defp get_base('wollen'), do: 'will'
+  defp get_base('möchten'), do: 'möchte'
 end

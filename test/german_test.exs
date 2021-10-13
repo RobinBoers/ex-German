@@ -73,15 +73,15 @@ defmodule GermanTest do
 
   # wissen
   test "ich weiB" do
-    assert German.Verbs.get({:ich, 'wissen'}) == 'weiB'
+    assert German.Verbs.get({:ich, 'wissen'}) == 'weiß'
   end
   test "du weiBt" do
-    assert German.Verbs.get({:du, 'wissen'}) == 'weiBt'
+    assert German.Verbs.get({:du, 'wissen'}) == 'weißt'
   end
   test "er/sie/es weiB" do
-    assert German.Verbs.get({:er, 'wissen'}) == 'weiB'
-    assert German.Verbs.get({:sie, 'wissen'}) == 'weiB'
-    assert German.Verbs.get({:es, 'wissen'}) == 'weiB'
+    assert German.Verbs.get({:er, 'wissen'}) == 'weiß'
+    assert German.Verbs.get({:sie, 'wissen'}) == 'weiß'
+    assert German.Verbs.get({:es, 'wissen'}) == 'weiß'
   end
   test "wir wissen" do
     assert German.Verbs.get({:wir, 'wissen'}) == 'wissen'

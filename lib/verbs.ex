@@ -34,7 +34,7 @@ defmodule German.Verbs do
   def get({pers, verb}) do
     cond do
       verb in @modal_auxiliary_verbs ->
-        German.ModalAuxiliaryVerbs.get({pers, verb})
+        German.ModalVerbs.get({pers, verb})
 
       verb in @irregular_verbs ->
         German.Verbs.conjugate_irregular({pers, verb})
@@ -74,11 +74,8 @@ defmodule German.Verbs do
     end
   end
 
-  @doc """
-    Method to get the base to conjugate the verb in `get()`
-  """
   @spec get_base(verb()) :: verb()
-  def get_base(verb) do
+  defp get_base(verb) do
     cond do
       Enum.take(verb, -2) == 'en' -> Enum.drop(verb, -2)
       Enum.take(verb, -1) == 'n' -> Enum.drop(verb, -1)
