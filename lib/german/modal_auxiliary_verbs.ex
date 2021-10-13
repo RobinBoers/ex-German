@@ -3,9 +3,6 @@ defmodule German.ModalVerbs do
     Module to generate all the variants of the modal auxiliary verbs in German.
   """
 
-  @typedoc """
-    A charlist representing the verb we're trying to conjugate.
-  """
   @type verb() :: charlist()
 
   @form_one [:ich, :er, :sie, :es]
@@ -13,15 +10,6 @@ defmodule German.ModalVerbs do
   @form_three [:wir, :siemv, :Sie]
   @form_four [:ihr]
 
-  @doc """
-    Method to conjugate a modal auxiliary verb in German given a personal noun and a verb.
-
-  ## Examples
-      iex> German.ModalVerbs.get({:sie, 'können'})
-      'kann'
-      iex> German.ModalVerbs.get({:ihr, 'möchten'})
-      'möchtet'
-  """
   @spec get({atom(), verb()}) :: verb()
   def get({_pers, verb}) when is_binary(verb), do: get(String.to_charlist(verb))
   def get({pers, verb}) do

@@ -15,19 +15,19 @@ git clone https://github.com/RobinBoers/ex-german
 ## Examples
 
 ```elixir
-iex> German.Verbs.get({:ich, 'gehen'})
+iex> German.get_verb({:ich, 'gehen'})
 'gehe'
 
-iex> German.Verbs.get({:ihr, 'arbeiten'})
+iex> German.get_verb({:ihr, 'arbeiten'})
 'arbeitet'
 
-iex> German.Verbs.get({:sie, 'können'})
+iex> German.get_verb({:sie, 'können'})
 'kann'
 
-iex> German.Verbs.get({:ihr, 'möchten'})
+iex> German.get_verb({:ihr, 'möchten'})
 'möchtet'
 
-iex> German.PastParticiple.get('fotografieren')
+iex> German.get_past_participle('fotografieren')
 'fotografiert'
 ```
 

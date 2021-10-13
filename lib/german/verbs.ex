@@ -1,11 +1,8 @@
 defmodule German.Verbs do
   @moduledoc """
-    Module to generate all the variants of the regular verbs in German.
+  Module to generate all the variants of the regular verbs in German.
   """
 
-  @typedoc """
-    A charlist representing the verb we're trying to conjugate.
-  """
   @type verb() :: charlist()
 
   @form_one [:ich]
@@ -20,15 +17,6 @@ defmodule German.Verbs do
 
   @consonants ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
 
-  @doc """
-    Method to conjugate a verb in German given a personal noun and a verb.
-
-  ## Examples
-      iex> German.Verbs.get({:ich, 'gehen'})
-      'gehe'
-      iex> German.Verbs.get({:ihr, 'arbeiten'})
-      'arbeitet'
-  """
   @spec get({pers :: atom(), verb()}) :: verb()
   def get({_pers, verb}) when is_binary(verb), do: get(String.to_charlist(verb))
   def get({pers, verb}) do
@@ -37,7 +25,7 @@ defmodule German.Verbs do
         German.ModalVerbs.get({pers, verb})
 
       verb in @irregular_verbs ->
-        German.Verbs.conjugate_irregular({pers, verb})
+        conjugate_irregular({pers, verb})
 
       true ->
         base = get_base(verb)
@@ -82,16 +70,9 @@ defmodule German.Verbs do
     end
   end
 
-  @doc """
-    Method to conjugate the irregular verbs in German.
-
-  ## Examples
-      iex> German.Verbs.conjugate_irregular({:ihr, 'haben'})
-      'habt'
-  """
   @spec conjugate_irregular({atom(), verb()}) :: verb()
-  def conjugate_irregular({_pers, verb}) when is_binary(verb), do: conjugate_irregular(String.to_charlist(verb))
-  def conjugate_irregular({pers, verb}) do
+  defp conjugate_irregular({_pers, verb}) when is_binary(verb), do: conjugate_irregular(String.to_charlist(verb))
+  defp conjugate_irregular({pers, verb}) do
     case verb do
       'sein' ->
          cond do
